@@ -30,9 +30,9 @@ loop:
 	for {
 		switch input {
 		case "add":
-			add(&accounts, m)
+			add(m)
 		case "update":
-			update(&accounts, m)
+			update(m)
 		case "get":
 			get(m)
 		case "exit":
@@ -44,15 +44,25 @@ loop:
 		fmt.Scanln(&input)
 	}
 
+	var newAccounts Accounts
+
+	for id, info := range m {
+		login := LoginInfo{
+			Id:      id,
+			Details: info,
+		}
+		newAccounts.Accounts = append(newAccounts.Accounts, login)
+	}
+
 	// At the end of the program we will rewrite the file for next use
-	b, _ := json.Marshal(accounts)
+	b, _ := json.Marshal(newAccounts)
 	os.WriteFile(dir+"/"+fileName, b, 0700)
 
 }
 
 // For those function we will start without encryption
 // Those three function define the flow of the app
-func add(a *Accounts, m map[string]AccountDetails) {
+func add(m map[string]AccountDetails) {
 	fmt.Println("Enter a unique identifier for the element you want to add, eg. Gmail, personal")
 	var id string
 	fmt.Scanln(&id)
@@ -71,15 +81,27 @@ func add(a *Accounts, m map[string]AccountDetails) {
 	details.Password = []byte(password)
 	details.encrypt()
 	m[id] = details
-	var info LoginInfo
-	info.Details = details
-	info.Id = id
-	a.Accounts = append(a.Accounts, info)
-
 }
 
-func update(a *Accounts, m map[string]AccountDetails) {
-	fmt.Println("update")
+func update(m map[string]AccountDetails) {
+	fmt.Println("Enter a unique identifier for the element you want to update")
+	var id string
+	fmt.Scanln(&id)
+	// We need to check if the element is already present in the map
+	oldValue, ok := m[id]
+	if !ok {
+		fmt.Println("The id doesn't exist")
+		return
+	}
+	var newValue AccountDetails
+	fmt.Println("Enter the new Password")
+	var password string
+	fmt.Scanln(&password)
+	newValue.Username = oldValue.Username
+	newValue.Password = []byte(password)
+	newValue.encrypt()
+	m[id] = newValue
+
 }
 
 func get(m map[string]AccountDetails) {
