@@ -30,11 +30,11 @@ loop:
 	for {
 		switch input {
 		case "add":
-			add(m)
+			Add(m)
 		case "update":
-			update(m)
+			Update(m)
 		case "get":
-			get(m)
+			Get(m)
 		case "exit":
 			break loop
 		default:
@@ -62,7 +62,7 @@ loop:
 
 // For those function we will start without encryption
 // Those three function define the flow of the app
-func add(m map[string]AccountDetails) {
+func Add(m map[string]AccountDetails) {
 	fmt.Println("Enter a unique identifier for the element you want to add, eg. Gmail, personal")
 	var id string
 	fmt.Scanln(&id)
@@ -83,7 +83,7 @@ func add(m map[string]AccountDetails) {
 	m[id] = details
 }
 
-func update(m map[string]AccountDetails) {
+func Update(m map[string]AccountDetails) {
 	fmt.Println("Enter a unique identifier for the element you want to update")
 	var id string
 	fmt.Scanln(&id)
@@ -104,7 +104,7 @@ func update(m map[string]AccountDetails) {
 
 }
 
-func get(m map[string]AccountDetails) {
+func Get(m map[string]AccountDetails) {
 	fmt.Println("Enter the id of the element you want to get")
 	var id string
 	fmt.Scanln(&id)
