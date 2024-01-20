@@ -18,6 +18,12 @@ type Pipe struct {
 	Err *os.File
 }
 
+/*
+References:
+https://stackoverflow.com/questions/10473800/in-go-how-do-i-capture-stdout-of-a-function-into-a-string
+
+https://stackoverflow.com/questions/46365221/fill-os-stdin-for-function-that-reads-from-it
+*/
 func preparePipe(input string) (Pipe, Pipe) {
 	old := Pipe{}
 	new := Pipe{}
